@@ -1,0 +1,20 @@
+# Spring Boot 설정
+spring:
+# Spring Boot log 설정
+    output:
+        ansi:
+            enabled: always
+
+# DataBase(MySQL) 설정
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3306/examplesdb?userSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+        username: urstory
+        password: u1234
+        driver-class-name: com.mysql.jdbc.Driver
+
+# Mybatis 설정
+mybatis:
+    type-aliases-package: com.example.basic.model.entity
+    mapper-locations: classpath:mapper/**/*.xml # classpath는 resource폴더를 가르킨다.
+    configuration:
+        map-underscore-to-camel-case: true
