@@ -21,12 +21,24 @@ public class ProductService {
         );
         return productList ;
     }
-    public List<ProductDto> insertProduct(ProductDto product){
-        List<ProductDto> productList = productMapper.insertProduct(
-            product.getProductId(), product.getProductName(), product.getProductPrice()
-        );
-        return productList ;
+    public void insertProduct(ProductDto dto) {
+        if(dto.getProductName() != null) {
+        productMapper.insertProduct(dto);
+        }
 
+        productMapper.insertProduct(dto);
+    }
+
+    public void updateProduct(ProductDto dto) {
+        if(dto.getProductId() != 0) {
+            productMapper.updateProduct(dto);
+        }
+    }
+
+    public void deleteProduct(int productId) {
+        if(productId != 0) {
+            productMapper.deleteProduct(productId);
+        }
     }
     
 }

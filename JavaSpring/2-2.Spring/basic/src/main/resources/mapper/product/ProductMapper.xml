@@ -36,30 +36,25 @@
     </insert>
 
     <update id="updateProduct" parameterType="ProductDto">
-    update product2
-    <set> 
-    <if test='productId != null and productId > 0'>
-        product_id = #{productId}
-    </if>
-    <if test='productName != null and productName != ""'>
-        product_name = #{productName}
-    </if>
-    <if test='productPrice != null and productPrice > 0'>
-        product_price = #{productPrice}
-    </if>
-    </set>
-    where 1=1
-    <if test='productId != null and productId > 0'>
-        and product_Id = #{productId}
-    </if>
-    ;
+        UPDATE product2
+        <set>
+            <if test= 'productName!=null and productName!=""'>
+                product_name = #{productName},
+            </if>
+            <if test= 'productPrice!=null and productPrice>=0'>
+                product_price = #{productPrice}
+            </if>
+        </set>
+        WHERE 1=1
+        and product_id = #{productId}
+        ;
     </update>
 
     <delete id="deleteProduct">
-        delete from product2
-        where 1=1
+        DELETE FROM product2
+        WHERE 1=1
         <if test='productId != null and productId > 0'>
-        and product_Id = #{productId}
+        AND product_id = #{productId}
         </if>
         ;
     </delete>

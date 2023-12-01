@@ -16,9 +16,8 @@ public interface ProductMapper {
         @Param("productPrice") int productPrice
     );
     
-    List<ProductDto> insertProduct(
-        @Param("productId") int productId,
-        @Param("productName") String productName,
-        @Param("productPrice") int productPrice
-    );
+    public void insertProduct(ProductDto dto);
+    public void updateProduct(ProductDto dto);
+    public void deleteProduct(@Param("productId") int productId);
+    
 } 
