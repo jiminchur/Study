@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.basic.model.entity.ProductEntity;
 import com.example.basic.model.entity.UserEntity;
 import com.example.basic.service.UserService;
 
