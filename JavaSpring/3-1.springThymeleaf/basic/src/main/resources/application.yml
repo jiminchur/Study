@@ -1,0 +1,13 @@
+spring:
+    output:
+        ansi:
+            enabled: always
+    
+    # tyhemleaf 설정
+    thymeleaf:
+        prefix: classpath:templates/
+        check-template-location: true
+        suffix: .html
+        mode: HTML
+        cache: false
+        
