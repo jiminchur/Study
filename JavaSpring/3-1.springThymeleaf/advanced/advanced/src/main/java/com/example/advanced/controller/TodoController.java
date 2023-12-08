@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.advanced.model.dto.TodoDto;
 import com.example.advanced.service.TodoService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class TodoController {
     }
     // localhost:8080/todo/save
     @PostMapping("/save")
-    public String insertTodo(@ModelAttribute TodoDto todo){
+    public String insertTodo(@Valid @ModelAttribute TodoDto todo){
         
         log.info("[TodoController][insertTodo]Start!!");
         
