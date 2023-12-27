@@ -36,11 +36,7 @@ public class UserController {
         log.info("[UserController][loginpage] Start!!");
         return "login";
     }
-    @PostMapping("/login")
-    public String login(){
-        log.info("[UserController][login] Start!!");
-        return "redirect:/user";
-    }
+
     @GetMapping("/user")
     public String user(){
         log.info("[UserController][user] Start!!");

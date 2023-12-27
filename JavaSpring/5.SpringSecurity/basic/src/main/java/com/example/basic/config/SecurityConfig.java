@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(
                 
-            )
+            );
         return http.build();
     }
 
