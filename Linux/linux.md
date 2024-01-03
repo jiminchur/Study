@@ -5,24 +5,71 @@
 '''ssh [사용자명]@[각 컴퓨터에 할당된 주소] '''
 > 이걸 linux에서 실행 시킨뒤에 iterm에 입력해주면 연동이 가능하다.
 
-## iterm에서 Jupyter 실행 시키기
+## Linux 명령어 모음집
 
-## Linux컴퓨터 종료 하기
+### Linux컴퓨터 종료 하기
+```
+sudo shutdown -h now 
+```
 
-''' sudo shutdown -h now '''
+### 현재 폴더 위치
+```
+pwd
+```
 
-## 현재 폴더 위치
+### 현재 사용중인 계정
+```
+whoami
+```
 
-''' pwd '''
+### 현재 폴더에 있는 파일을 숨겨진거 까지 모두 보여줘
+```
+ls -al
+```
+- ls만 하면 숨겨진 파일까진 보여주진 않는다 
 
-## 현재 사용중인 계정
+### 제일 상위로 이동하기
+```
+cd ~
+```
+### sudo vim /etc/hosts
+```
+sudo vim /etc/hosts
+```
 
-''' whoami '''
+### bashrc
+```
+vim ~/.bashrc
 
-## 현재 폴더에 있는 파일을 숨겨진거 까지 모두 보여줘
+# 변경사항 저장하기
+source ~/.bashrc
+```
 
-''' ls -al '''
-> ls만 하면 숨겨진 파일까진 보여주진 않는다 
+### apt 업데이트
+```
+sudo apt update
+```
+
+### 프로그램 위치 확인
+```
+whereis java
+```
+
+### 실제 실행되는 프로그램 위치 확인
+```
+which java
+```
+
+### 현재 계정에서 나가기
+```
+exit
+```
+
+
+## vim 설치하기
+```
+sudo apt install vim -y
+```
 
 ## drwxrwxrwx의 의미
 
@@ -36,13 +83,16 @@
 ## 권한변경
 
 > 위에를 이해 했다면 권한 변경이해도 금방 될거다 원래 750인걸 700으로 권한을 변경한다면 'chmod'를 사용하면 된다.
-
-''' chmod 700 [바꿀 폴더명] '''
+```
+chmod 700 [바꿀 폴더명]
+```
 
 ## vim
 
 > Vim 설치하기 
-''' vim/home/[계정]/.jupyter/jupyter_notebook_config.py '''
+```
+vim/home/[계정]/.jupyter/jupyter_notebook_config.py
+```
 
 - 수정모드 : i
 - 명령어모드 : ':q' 나가기 / ':q!' 강제로 나가기
@@ -50,8 +100,10 @@
 ## jupyter server password 설정하기
 
 > 서버 jupyter에서 사용할 password설정하기
+```
+vim/home/[계정]/.jupyter/jupyter_notebook_config.py
+```
 
-''' vim/home/[계정]/.jupyter/jupyter_notebook_config.py '''
 > 들어가서 '수정모드' 927번째행으로 이동후 설정된 비밀번호 입력 'wq(저장하고 나오기)'입력 후 나가기
 
 ## workspace 폴더 생성
@@ -84,11 +136,6 @@
     
     병렬처리
 
-## miniconda 설치 주소 (arm용)
-```
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
-```
-
 ## wget missingURL오류
 1. ping오류 인지확인한다.
 ```
@@ -111,3 +158,64 @@ sudo netplan apply
 ping 8.8.8.8
 ```
 > 8.8.8.8은 크롬 인터넷 주소이고 연결되어 있는지 확인해야 한다. 보통 Mac에서 많이 발생한다.
+
+## Mac에서 windows powertoys의 호스트파일관리와 같은 기능구현 하는법
+1. Mac terminal에서 아래 코드 입력
+```
+sudo vim /etc/hosts
+```
+
+2. password 입력 후에 접속하기
+
+3. namenode/secondnode/datanode의 ip을 넣고 뒤에 name입력해주기
+```
+000.00.000.000 namenode
+000.00.000.000 secondnode
+000.00.000.000 datanode
+```
+
+4. 저장 후 빠져나오기
+
+# Miniconda
+
+## miniconda 설치 주소 (arm용)
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+```
+
+## minconda 설치하기
+1. 권한 변경하기
+```
+chmod 700 ./Miniconda3-latest-Linux-aarch64.sh
+```
+
+2. 실행하기
+```
+./Miniconda3-latest-Linux-aarch64.sh
+```
+> 주의할점이 enter을 쭉 누르다보면 yes입력 창이 뜬다 이걸 입력해줘야 한다. 중간에 끊으면 안됨
+
+3. 변경사항 저장하기
+```
+source ~/.bashrc
+```
+
+- 이제 자동적으로 (base)라는 가상환경에 들어가게 된다.
+```
+# 가상환경 빠져나오는 코드
+conda deactivate
+
+# 다시 들어가는 코드
+conda activate
+
+# 안되면 base 가상환경 이름까지 입력
+conda activate base
+```
+
+# jupyter
+
+## jupyter 설치하기
+```
+pip3 install jupyter
+```
+

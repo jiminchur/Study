@@ -1,13 +1,56 @@
+# Hadoop
+
+## hadoop id 생성하기
+```
+sudo adduser hadoop
+
+# password는 관리하기 편하게 아이디와 동일하게 설정
+
+# 비밀번호 변경은 
+sudo password [계정이름]
+```
+
+## hadoop 계정으로 접속
+```
+su hadoop
+```
+
+## hadoop 계정에 권한 주기 (일반계정에서 진행)
+```
+sudo visudo
+
+# 밑에 내리다 보면 root ALL...로 써있는곳 밑에다가 추가해서 계정만 hadoop으로 바꾸고 똑같이 적어주면 된다.
+```
+
+## hadoop 계정에 jdk 설치
+```
+sudo apt install openjdk-8jdk
+
+/usr/lib/jvm/java-8-openjdk-arm64
+```
+
+## bashrc에서 Java_home export 추가하기
+```
+# bashrc 접속
+vim ~/.bashrc
+
+# 맨 밑에다가 아래코드 입력
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+# 저장하고 나오기
+
+# 변경사항 저장
+source ~/.bashrc
+
+# 나오는지 확인하기
+echo $JAVA_HOME
+# 입력 후 잘나오면 된거임
+```
+
 ## hadoop 설치 주소 (arm용)
 ```
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6-aarch64.tar.gz
 ```
-
-## OLAP 시스템
-
-> Online Analytical Processing
-
-## 맵리듀스
 
 ## hadoop 실행전 체크리스트
 1. 자바설치 유무
@@ -44,8 +87,6 @@ sudo systemctl disable ufw
 
 sudo service ufw stop
 ```
-
-## 리눅스 편리하게 사용
 
 ## hostname 변경하기
 - 기존 hadoop계정 이름을 client로 변경한다 hadoop@...-> hadoop@client
@@ -147,3 +188,127 @@ ssh secondnode
 ssh datanode3
 ssh client
 ```
+## hadoop 실행하기위한 준비
+1. namenode에서 초기화 실행
+```
+hadoop namenode -format
+```
+
+2. 실행하기
+```
+start-dfs.sh
+
+# jps로 생성됬는지 확인하기 3개가 떠야함
+
+# 멈추는 코드
+stop-dfs.sh
+```
+
+3. secondnode로 이동후 yarn실행
+```
+start-yarn.sh
+
+# jps로 생성됬는지 확인하기
+```
+
+4. 마지막으로 jps확인할떄는 총 5개가 떠야함 앞에 숫자들은 무시
+```
+2675 NodeManager
+3606 DataNode
+2841 JobHistoryServer
+3499 NameNode
+3884 Jps
+```
+
+5. 다시 namenode로 이동 후 아래코드 입력
+```
+mr-jobhistory-daemon.sh start historyserver
+```
+
+## 서버확인하기
+1. 주소창에 아래 코드 입력
+```
+[namenode ip주소]:50070
+```
+
+2. datanodes로 이동해서 그래프에 3개가 뜨는지 확인
+
+## 원격실행하기
+```
+ssh namenode start-dfs.sh
+
+ssh secondnode start-yarn.sh
+
+ssh namenode mr-jobhistory-daemon.sh start historyserver
+
+ssh namenode jps
+
+ssh namenode jps
+
+ssh namenode jps
+
+```
+## alias 설정하기
+```
+# vim으로 bashrc 접속
+vim ~/.bashrc
+
+# alias 추가
+alias start-dfs="ssh namenode start-dfs.sh"
+alias start-yarn="ssh secondnode start-yarn.sh"
+alias stop-dfs="ssh namenode stop-dfs.sh"
+alias stop-yarn="ssh secondnode stop-yarn.sh"
+alias start-mr="ssh namenode mr-jobhistory-daemon.sh start historyserver"
+alias stop-mr="ssh namenode mr-jobhistory-daemon.sh stop historyserver"
+
+# 변경사항 저장하기
+source ~/.bashre
+```
+
+## 실습해보기
+1. encore 폴더 만들기
+```
+# /(폴더이름)
+hdfs dfs -mkdir /encore
+```
+
+2. 실습 할 폴더 만들기
+```
+wget https://gutenberg.org/cache/epub/100/pg100.txt 
+```
+
+3. pg100.txt 텍스트 파일을 encore폴더안에 집어넣기
+```
+hdfs dfs -put ./pg100.txt /encore
+```
+
+4. 밑에 폴더로 접속
+```
+cd /home/hadoop/hadoop/share/hadoop/mapreduce
+```
+
+5. grep으로 encore폴더에서 result파일에서 알파벳 문자 a-z 하나이상 연속으로 나오는 패턴을 찾을 것 ("a a" : x, "aaa" : o )
+```
+hadoop jar ./hadoop-mapreduce-examples-3.3.6.jar grep /encore /result/ '[a-z]+ '
+```
+> 파일을 보면 카운트가 되어있는데 이것들은 jar파일에 Java코드로 wordcount코드가 있기 때문이다.
+6. result파일 밑에 있는 모든것들을 출력해라!
+```
+hdfs dfs -cat /result/*
+```
+
+### 실습한거 확인하기
+1. namenode사이트로 이동
+
+2. utilities/browse the file system으로 이동
+
+3. result파일 생성되었는지 확인
+
+4. result에 들어가서 part-r-00000생성되었는지 확인 후 들어가서 다운로드
+
+5. 아래코드로 이동
+```
+[secondnode ip 주소]:8088
+```
+
+6. finalstatus가 succeeded인지확인 후 nodes로 이동해서 존재하는지 확인
