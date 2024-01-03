@@ -73,3 +73,41 @@
 
 ''' source ~/.bashrc '''
 ''' ls -al ~/ | grep bash '''
+
+## 스케일 업 / 아웃
+
+- 스케일 업
+    
+     버전 업그레이드
+
+- 스케일 아웃
+    
+    병렬처리
+
+## miniconda 설치 주소 (arm용)
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+```
+
+## wget missingURL오류
+1. ping오류 인지확인한다.
+```
+ping 8.8.8.8
+```
+2. 오류가 나면 다음부터 순서대로 진행한다.
+```
+# etc/netplan으로 이동
+cd /etc/netplan/
+
+# ip 주소 설정 폴더로 이동 
+sudo vim 00-installer-config.yaml
+
+# 안에서 false로 되어있는 값을 true로 변경
+
+# 변경사항 저장
+sudo netplan apply
+
+# 다시 핑 확인
+ping 8.8.8.8
+```
+> 8.8.8.8은 크롬 인터넷 주소이고 연결되어 있는지 확인해야 한다. 보통 Mac에서 많이 발생한다.
