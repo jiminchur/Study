@@ -312,3 +312,18 @@ hdfs dfs -cat /result/*
 ```
 
 6. finalstatus가 succeeded인지확인 후 nodes로 이동해서 존재하는지 확인
+
+## 하둡 실행 순서
+- 실행하기 : HDFS -> YARN -> MR-History Server​
+```
+namenode   : start-dfs.sh
+secondnode : start-yarn.sh
+namenode   : mr-jobhistory-daemon.sh start historyserver​
+```
+
+- 종료하기 : YARN -> MR-History Server -> HDFS​
+```
+secondnode : stop-yarn.sh
+namenode   : mr-jobhistory-daemon.sh stop historyserver​
+namenode   : stop-dfs.sh
+```

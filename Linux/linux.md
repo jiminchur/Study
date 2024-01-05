@@ -64,14 +64,17 @@ which java
 ```
 exit
 ```
+### 스케일 업 / 아웃
 
+- 스케일 업
+    
+    - 버전 업그레이드
 
-## vim 설치하기
-```
-sudo apt install vim -y
-```
+- 스케일 아웃
+    
+    - 병렬처리
 
-## drwxrwxrwx의 의미
+### drwxrwxrwx의 의미
 
 > 'd'는 폴더라는 의미 이고 'r' read ,'w' write, 'x' 실행이라는 뜻 이다.
 > 3등분으로 나눌수가 있는데 "소유자/그룹/others"로 나눈다.
@@ -80,12 +83,29 @@ sudo apt install vim -y
 1. drwxr-x--- : 폴더 750
 2. -rw-r--r-- : 644
 
-## 권한변경
+### 권한변경
 
 > 위에를 이해 했다면 권한 변경이해도 금방 될거다 원래 750인걸 700으로 권한을 변경한다면 'chmod'를 사용하면 된다.
 ```
 chmod 700 [바꿀 폴더명]
 ```
+
+### 포트 확인 하는 방법
+```
+netstat
+
+# net-tools 설치
+sudo apt install net-tools -y
+
+# 특정 포트(여기서는 8888)와 관련된 네트워크 연결 및 프로세스 정보를 조회
+netstat -nao | grep 8888
+
+netstat -lntp | grep 8888
+```
+
+
+
+
 
 ## vim
 
@@ -97,44 +117,10 @@ vim/home/[계정]/.jupyter/jupyter_notebook_config.py
 - 수정모드 : i
 - 명령어모드 : ':q' 나가기 / ':q!' 강제로 나가기
 
-## jupyter server password 설정하기
 
-> 서버 jupyter에서 사용할 password설정하기
-```
-vim/home/[계정]/.jupyter/jupyter_notebook_config.py
-```
 
-> 들어가서 '수정모드' 927번째행으로 이동후 설정된 비밀번호 입력 'wq(저장하고 나오기)'입력 후 나가기
 
-## workspace 폴더 생성
 
-''' mkdir workspace '''
-
-> 해당 폴더로 이동하기
-''' cd workspace '''
-
-> 현재위치 초기화(처음으로 되돌아가기)
-''' cd ~ '''
-
-## jupyter lab 실행
-
-''' jupyter lab --ip=0.0.0.0 '''
-> 설정은 0.0.0.0으로 하지만 사이트로 접속할떄는 "[고유아이피주소]:8888"으로 접속해야한다.
-
-## 의미를 찾아봐야할 코드들
-
-''' source ~/.bashrc '''
-''' ls -al ~/ | grep bash '''
-
-## 스케일 업 / 아웃
-
-- 스케일 업
-    
-     버전 업그레이드
-
-- 스케일 아웃
-    
-    병렬처리
 
 ## wget missingURL오류
 1. ping오류 인지확인한다.
@@ -159,6 +145,10 @@ ping 8.8.8.8
 ```
 > 8.8.8.8은 크롬 인터넷 주소이고 연결되어 있는지 확인해야 한다. 보통 Mac에서 많이 발생한다.
 
+
+
+
+
 ## Mac에서 windows powertoys의 호스트파일관리와 같은 기능구현 하는법
 1. Mac terminal에서 아래 코드 입력
 ```
@@ -175,6 +165,11 @@ sudo vim /etc/hosts
 ```
 
 4. 저장 후 빠져나오기
+
+
+
+
+
 
 # Miniconda
 
@@ -212,10 +207,116 @@ conda activate
 conda activate base
 ```
 
+
+
+
+
 # jupyter
+> 모든 진행은 가상환경 base에서 진행한다.
 
 ## jupyter 설치하기
 ```
 pip3 install jupyter
 ```
 
+## jupyter server password 생성
+```
+jupyter server password
+
+cat /home/gen2/.jupyter/jupyter_server_config.json
+-> after 나오는 "argon..." 를 따로 저장해둔다
+
+# 아래에 들어가서 위에서 저장한걸 입력하면 된다.
+vim /home/[계정]/.jupyter/jupyter_notebook_config.py
+# 927번에 입력
+:927 로 이동후 입력모드한 후에 입력
+```
+
+## 서버 실행
+1. workspace폴더 생성 및 이동
+```
+mkdir workspace
+
+cd workspace
+```
+
+2. 실행
+```
+jupyter lab --ip=0.0.0.0
+
+# 만약 백그라운드로 실행하고 싶으면 nohup
+nohup jupyter lab --ip=0.0.0.0 &
+```
+
+3. 접속
+```
+[hadoop ip 주소]:8888
+```
+
+## 운영체제 batch job 설정
+- 예시
+```
+# 아래에 접속하기
+crontab -e
+
+# 자동화 코드
+## 월요일 부터 금요일까지 18시 정각에 day.sh를 실행 시키겠다
+00 18 * * 1-5 /home/ec2-user/workspace/batch/day.sh 
+## 금요일까지 18시 15분에 week.sh를 실행 시키겠다
+15 18 * * 5 /home/ec2-user/workspace/batch/week.sh 
+```
+
+- 실습하기
+1. hadoop계정에서 a.py 생성 및 접속
+```
+vim a.py
+```
+
+2. 실행 시킬 파이썬 코드 작성
+```
+# 현재시간을 띄워주는 코드 #
+
+from datetime import datetime
+
+# 현재 시간을 YYYY-MM-DD HH:MM:SS 형식의 문자열로 가져옴
+now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+# 현재 디렉터리에 있는 test.txt 파일을 쓰기 모드로 열기
+f = open("./test.txt", "w")
+
+# 현재 시간을 파일에 씀
+f.write(now)
+
+# 파일 닫기
+f.close()
+
+# 저장 후 빠져나오기
+```
+
+3. a.py 실행하기
+```
+python a.py 
+```
+
+4. 스크립트 파일 만들기 및 접속
+```
+vim test.sh 
+```
+
+5. 아래코드 전체 입력 후 저장하고 빠져나오기
+```
+#!/bin/bash
+/home/hadoop/miniconda3/bin/python /home/hadoop/a.py
+```
+6. sh파일에 실행 권한 부여
+```
+chmod +x ./test.sh
+```
+
+7. crontab -e에 접속 및 자동화 코드 작성
+```
+crontab -e
+
+# 매일 5시 46분에 test.sh파일을 실행 시킨다.
+46 05 * * * /home/hadoop/test.sh 
+```
