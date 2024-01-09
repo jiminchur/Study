@@ -321,3 +321,36 @@ crontab -e
 # 매일 5시 46분에 test.sh파일을 실행 시킨다.
 46 05 * * * /home/hadoop/test.sh 
 ```
+
+
+
+
+## linux에 'ssh client'로 바로 들어가기
+
+1. 맥에서 사용자/.ssh 터미널로 접속
+```
+cd .ssh/
+```
+
+2. config 파일이 없다면 생성 있다면 밑에다가 작성
+```
+Host client
+  HostName 000.00.000.000
+  User hadoop
+  IdentityFile /Users/[사용자]/.ssh/hadoop.pem
+```
+
+3. client에서 private키 복사 후 밑에 진행
+```
+# .ssh 에서 진행
+
+# hadoop.pem 만들기
+vim hadoop.pem 접속후 붙여넣기
+
+# 권한 변경
+chmod 400 hadoop.pem
+```
+
+4. ssh client로 로그인 없이 접속가능한지 확인!!
+
+
