@@ -7,16 +7,6 @@
 
 ## Linux 명령어 모음집
 
-### Linux컴퓨터 종료 하기
-```
-sudo shutdown -h now 
-```
-
-### 현재 폴더 위치
-```
-pwd
-```
-
 ### 현재 사용중인 계정
 ```
 whoami
@@ -28,10 +18,6 @@ ls -al
 ```
 - ls만 하면 숨겨진 파일까진 보여주진 않는다 
 
-### 제일 상위로 이동하기
-```
-cd ~
-```
 ### sudo vim /etc/hosts
 ```
 sudo vim /etc/hosts
@@ -354,3 +340,12 @@ chmod 400 hadoop.pem
 4. ssh client로 로그인 없이 접속가능한지 확인!!
 
 
+
+
+
+## File 전송 프로그램 scp
+```
+scp  [대상파일]   [계정]@[ip]:[경로]
+
+ex : scp ./dog_model_service.7z gen2@192.168.57.129:/home/gen2/
+```

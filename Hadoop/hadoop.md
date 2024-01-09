@@ -327,3 +327,33 @@ secondnode : stop-yarn.sh
 namenode   : mr-jobhistory-daemon.sh stop historyserver​
 namenode   : stop-dfs.sh
 ```
+
+## 파일 백업하기
+1. 데이터베이스 만들기
+```
+CREATE DATABASE mydata;
+```
+
+2. 데이터프레임 만들어둔 데이터베이스에 업로드 하기
+```
+pip install mysqlclient 
+
+import sqlalchemy
+
+user = "encore"
+password = "1q2w3e!"
+host = "172.21.116.192"
+port = "3306"
+database = "mydata"
+engine = sqlalchemy.create_engine(f"mysql://{user}:{password}@{host}:{port}/{database}")
+
+star_df.to_sql(name="star2", if_exists="replace", con=engine)
+```
+
+3. 백업하기
+```
+mysqldump -uroot -p123 hivedb > ~/workspace/hivedb.sql
+
+# 백업한걸 다시 불러올때
+mysql -uroot -p123 mydata < ~/workspace/mydata.sql
+```
