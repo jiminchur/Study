@@ -49,6 +49,8 @@
 # web
 - spring
 - django
+[인스타그램 클론코딩](https://github.com/tkdlek11112/django_zero_to_instagram)
+[Django 연습 사이트](https://developer.mozilla.org/ko/docs/Learn/Getting_started_with_the_web)
 
 # 크롤링
 

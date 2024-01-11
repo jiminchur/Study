@@ -349,3 +349,31 @@ scp  [대상파일]   [계정]@[ip]:[경로]
 
 ex : scp ./dog_model_service.7z gen2@192.168.57.129:/home/gen2/
 ```
+
+
+
+
+## find 명령어 사용하기
+```
+find [위치] -name [검색이름]
+
+# 예시
+
+# 이름에 jar로 끝나는 파일 찾기
+find ./ -name "*.jar"
+
+# 이름에 jar로 끝나는 파일 찾기 + dev파일 안에 있는
+find / -name "*.jar" 2>/dev/null
+
+# 이름에 jar로 끝나는 파일 찾기 + dev파일 안에 있는 + result.txt에 저장하기
+find ./ -name "*.jar" 2>/dev/null > result.txt
+
+# result.txt 확인하기
+vim result.txt
+```
+
+## chown 파일 소유자 변경
+```
+# 소유자를 hadoop:hadoop으로 변경하는데 sqoop2파일 부터 이하 파일 모두 변경하기
+sudo chown -R hadoop:hadoop /var/lib/sqoop2/
+```
